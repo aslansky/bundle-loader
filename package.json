@@ -1,0 +1,31 @@
+{
+  "name": "BundleLoader",
+  "version": "0.1.0",
+  "description": "A loader for loading js bundles with data attributes",
+  "author": "Alexander Slansky <alexander@slansky.net> (http://slansky.net)",
+  "keywords": [
+    "file",
+    "bundle",
+    "loader",
+    "data-attribute"
+  ],
+  "directories": {
+    "lib": "./lib",
+    "test": "./test"
+  },
+  "main": "./lib/bundle-loader",
+  "homepage": "http://github.com/aslansky/bundle-loader",
+  "repository": "git://github.com/aslansky/bundle-loader.git",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt": "~0.4",
+    "grunt-contrib-uglify": "~0.1.1",
+    "grunt-contrib-jshint": "~0.3.0",
+    "grunt-karma": "~0.4.0",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-watch": "~0.3.1",
+    "grunt-contrib-concat": "~0.2.0"
+  }
+}
