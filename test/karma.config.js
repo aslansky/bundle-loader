@@ -2,13 +2,12 @@
 basePath = '../';
 
 files = [
-  MOCHA,
-  MOCHA_ADAPTER,
-  {pattern: 'test/lib/chai.js', included: true},
+  JASMINE,
+  JASMINE_ADAPTER,
   {pattern: 'test/lib/jQuery.js', included: true},
   {pattern: 'lib/*.js', included: true},
   {pattern: 'test/fixtures/*', included: false},
-  {pattern: 'test/lib/chai-sinon.js', included: true},
+  {pattern: 'test/lib/jasmine-sinon.js', included: true},
   {pattern: 'test/lib/sinon.js', included: true},
   'test/spec/*.js'
 ];

@@ -1,7 +1,6 @@
 describe('Bundle-Loader', function() {
 
   var path = '/base/test/fixtures/';
-  var expect = chai.expect;
 
   beforeEach(function () {
     this.xhr = sinon.useFakeXMLHttpRequest();
@@ -18,38 +17,38 @@ describe('Bundle-Loader', function() {
   });
 
   describe('bundle loading', function () {
-    before(function () {
+    beforeEach(function () {
       $('body').append('<div data-require="test"></div>');
     });
     it('should load one js bundle after load() is called', function () {
       var callback = sinon.spy();
       var loader = Loader({path: path, autoload: false}).done(callback).load();
 
-      expect(this.requests.length).to.be.equal(1);
+      expect(this.requests.length).toEqual(1);
       this.requests[0].respond(200, { "Content-Type": "text/javascript" }, '(function (){})();');
-      expect(callback).to.be.calledWith(["test"], []);
+      expect(callback).toHaveBeenCalledWith(["test"], []);
     });
   });
 
   describe('bundle auto loading', function () {
-    before(function () {
+    beforeEach(function () {
       $('body').append('<div data-require="test"></div>');
     });
     it('should load one js bundle instantly', function () {
       var callback = sinon.spy();
       var loader = Loader({ path: path, autoload: true}).done(callback);
 
-      expect(this.requests.length).to.be.equal(1);
+      expect(this.requests.length).toEqual(1);
       this.requests[0].respond(200, { "Content-Type": "text/javascript" }, '(function (){})();');
-      expect(callback).to.be.calledWith(["test"], []);
+      expect(callback).toHaveBeenCalledWith(["test"], []);
     });
   });
 
   describe('load on event', function () {
-    before(function () {
+    beforeEach(function () {
       $('body').append('<div id="test"></div>');
     });
-    after(function () {
+    afterEach(function () {
       $('#test').remove();
     });
     it('should load one js bundle on click event', function () {
@@ -62,48 +61,53 @@ describe('Bundle-Loader', function() {
       var e = jQuery.Event("click");
       $('#test').trigger(e);
 
-      expect(this.requests.length).to.be.equal(1);
+      expect(this.requests.length).toEqual(1);
       this.requests[0].respond(200, { "Content-Type": "text/javascript" }, '(function (){})();');
-      expect(hideLoader).to.be.calledOnce;
-      expect(showLoader).to.be.calledOnce;
+      expect(hideLoader).toHaveBeenCalledOnce();
+      expect(showLoader).toHaveBeenCalledOnce();
     });
   });
 
   describe('bundle caching in locastorage', function () {
-    before(function () {
+    beforeEach(function () {
       $('body').append('<div data-require="test"></div>');
     });
     it('should save loaded source in localstorage and then get bundle from localstorage', function () {
       var callback = sinon.spy();
       var loader = Loader({ path: path, autoload: true}).done(callback);
+      var data = null;
 
-      expect(this.requests.length).to.be.equal(1);
+      expect(this.requests.length).toEqual(1);
       this.requests[0].respond(200, { "Content-Type": "text/javascript" }, '(function (){})();');
-      expect(callback).to.be.calledWith(["test"], []);
-      expect(JSON.parse(localStorage.getItem('loader-test'))).to.have.keys('data', 'time', 'buster', 'expire');
+      expect(callback).toHaveBeenCalledWith(["test"], []);
+      data = JSON.parse(localStorage.getItem('loader-test'));
+      expect(data.data).toBeDefined();
+      expect(data.time).toBeDefined();
+      expect(data.buster).toBeDefined();
+      expect(data.expire).toBeDefined();
       loader.load(true);
-      expect(this.requests.length).to.be.equal(1);
+      expect(this.requests.length).toEqual(1);
       loader.clearStorage();
-      expect(localStorage).to.be.empty;
+      expect(localStorage).toEqual({});
     });
   });
 
   describe('load error', function () {
-    before(function () {
+    beforeEach(function () {
       $('body').append('<div data-require="foo"></div>');
     });
     it('should fail', function () {
       var callback = sinon.spy();
       var loader = Loader({path: path, autoload: true}).fail(callback);
 
-      expect(this.requests.length).to.be.equal(1);
+      expect(this.requests.length).toEqual(1);
       this.requests[0].respond(404, { "Content-Type": "text/html" }, 'Not found.');
-      expect(callback).to.be.calledWith([], ["foo"]);
+      expect(callback).toHaveBeenCalledWith([], ["foo"]);
     });
   });
 
   describe('syntax error in javascript', function () {
-    before(function () {
+    beforeEach(function () {
       $('body').append('<div data-require="bar"></div>');
     });
     it('should raise an exception', function () {
@@ -114,29 +118,29 @@ describe('Bundle-Loader', function() {
       // stub console log
       sinon.stub(console, 'log', spy);
       var loader = Loader({path: path, autoload: true}).fail(callback);
-      expect(this.requests.length).to.be.equal(1);
+      expect(this.requests.length).toEqual(1);
       this.requests[0].respond(200, { "Content-Type": "text/javascript" }, '(function (){test})();');
-      expect(callback).to.be.calledWith([], ["bar"]);
+      expect(callback).toHaveBeenCalledWith([], ["bar"]);
       // check if console.log was called once
-      expect(spy).to.be.calledOnce;
+      expect(spy).toHaveBeenCalledOnce();
       console.log.restore();
     });
   });
 
   describe('custom data attribute', function () {
-    before(function () {
+    beforeEach(function () {
       $('body').append('<div data-load="test"></div>');
     });
-    after(function () {
+    afterEach(function () {
       $('[data-load]').remove();
     });
     it('should load one js bundle instantly', function () {
       var callback = sinon.spy();
       var loader = Loader({attr: 'data-load', path: path, autoload: true}).done(callback);
 
-      expect(this.requests.length).to.be.equal(1);
+      expect(this.requests.length).toEqual(1);
       this.requests[0].respond(200, { "Content-Type": "text/javascript" }, '(function (){})();');
-      expect(callback).to.be.calledWith(["test"], []);
+      expect(callback).toHaveBeenCalledWith(["test"], []);
     });
   });
 
