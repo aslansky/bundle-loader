@@ -12,7 +12,7 @@ module.exports = function(grunt) {
               '<%= grunt.template.today("yyyy-mm-dd") %> */\n'
         },
         files: {
-          'build/bundle-loader.js': ['lib/*.js']
+          'bundle-loader.js': ['lib/*.js']
         }
       }
     },
@@ -23,7 +23,7 @@ module.exports = function(grunt) {
               '<%= grunt.template.today("yyyy-mm-dd") %> */\n'
         },
         files: {
-          'build/bundle-loader.min.js': ['lib/*.js']
+          'bundle-loader.min.js': ['lib/*.js']
         }
       }
     },
