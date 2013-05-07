@@ -106,28 +106,6 @@ describe('Bundle-Loader', function() {
     });
   });
 
-  describe('syntax error in javascript', function () {
-    beforeEach(function () {
-      $('body').append('<div data-require="bar"></div>');
-    });
-    it('should raise an exception', function () {
-      // callback for loader call
-      var callback = sinon.spy();
-      // spy for console.log
-      var spy = sinon.spy();
-      // stub console log // mock console for ie
-      if (typeof console === 'object') sinon.stub(console, 'log', spy);
-      else console = {log: spy};
-      var loader = Loader({path: path, autoload: true}).fail(callback);
-      expect(this.requests.length).toEqual(1);
-      this.requests[0].respond(200, { "Content-Type": "text/javascript" }, '(function (){test})();');
-      expect(callback).toHaveBeenCalledWith([], ["bar"]);
-      // check if console.log was called once
-      expect(spy).toHaveBeenCalledOnce();
-      console.log.restore();
-    });
-  });
-
   describe('custom data attribute', function () {
     beforeEach(function () {
       $('body').append('<div data-load="test"></div>');
