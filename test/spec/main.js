@@ -115,8 +115,9 @@ describe('Bundle-Loader', function() {
       var callback = sinon.spy();
       // spy for console.log
       var spy = sinon.spy();
-      // stub console log
-      sinon.stub(console, 'log', spy);
+      // stub console log // mock console for ie
+      if (typeof console === 'object') sinon.stub(console, 'log', spy);
+      else console = {log: spy};
       var loader = Loader({path: path, autoload: true}).fail(callback);
       expect(this.requests.length).toEqual(1);
       this.requests[0].respond(200, { "Content-Type": "text/javascript" }, '(function (){test})();');
