@@ -32,11 +32,11 @@ module.exports = function(grunt) {
         configFile: 'test/karma.config.js'
       },
       watch: {
-        browsers: ['Chrome'],
+        browsers: ['Chrome', 'Firefox'],
         background: true
       },
       test: {
-        browsers: ['PhantomJS', 'Chrome', 'Firefox'],
+        browsers: ['Chrome', 'Firefox'],
         singleRun: true
       },
       report: {
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
         preprocessors: {
           'lib/*.js': 'coverage'
         },
-        browsers: ['PhantomJS'],
+        browsers: ['Chrome'],
         singleRun: true
       }
     },
@@ -78,5 +78,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['karma:watch', 'watch']);
   grunt.registerTask('test', ['jshint:test', 'karma:test']);
+  grunt.registerTask('report', ['karma:report']);
   grunt.registerTask('build', ['concat:build','uglify:build']);
 };

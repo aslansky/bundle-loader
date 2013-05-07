@@ -1,6 +1,6 @@
 {
   "name": "BundleLoader",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A loader for loading js bundles with data attributes",
   "author": "Alexander Slansky <alexander@slansky.net> (http://slansky.net)",
   "keywords": [
@@ -17,7 +17,7 @@
   "homepage": "http://github.com/aslansky/bundle-loader",
   "repository": "git://github.com/aslansky/bundle-loader.git",
   "scripts": {
-    "test": "grunt test"
+    "test": "./node_modules/grunt-karma/node_modules/.bin/karma start --single-run --browsers PhantomJS ./test/karma.config.js"
   },
   "devDependencies": {
     "grunt": "~0.4",
