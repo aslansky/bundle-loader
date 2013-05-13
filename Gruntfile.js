@@ -52,6 +52,17 @@ module.exports = function(grunt) {
         singleRun: true
       }
     },
+    complexity: {
+      generic: {
+        src: ['lib/*.js'],
+        options: {
+          errorsOnly: false,
+          cyclomatic: 4,
+          halstead: 9,
+          maintainability: 80
+        }
+      }
+    },
     jshint: {
       test: ['Gruntfile.js', 'lib/*.js']
     },
@@ -61,7 +72,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['lib/*.js', 'test/spec/*.js'],
-        tasks: ['jshint:test', 'karma:watch:run'],
+        tasks: ['jshint:test', 'karma:watch:run', 'complexity'],
         options: {
           nospawn: true
         }
@@ -75,6 +86,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-complexity');
 
   grunt.registerTask('default', ['karma:watch', 'watch']);
   grunt.registerTask('test', ['jshint:test', 'karma:test']);
