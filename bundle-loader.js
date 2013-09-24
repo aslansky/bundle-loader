@@ -1,4 +1,4 @@
-/*! BundleLoader - v0.2.0 - 2013-05-07 */
+/*! BundleLoader - v0.2.0 - 2013-07-15 */
 (function (root, factory) {
     if (typeof exports === 'object') {
       module.exports = factory(require('jQuery'));
@@ -159,9 +159,9 @@
   function failFile (file, error, errorObj) {
     toLoad--;
     failed.push(file.toString());
-    if (console && typeof console.log === 'function' && errorObj.name) {
-      if (errorObj.stack) console.log(errorObj.stack);
-      else console.log(errorObj.name + ': ' + errorObj.message);
+
+    if (console && typeof console.log === 'function') {
+      console.log(errorObj.toString());
     }
     dfd.notify('error', file, error, errorObj);
   }
@@ -182,16 +182,17 @@
     localStorage.setItem(defaults.storagePrefix + name, JSON.stringify(obj));
   }
 
+  function isValid (item) {
+    return item.data && item.expire - +new Date() > 0 && item.buster === defaults.cacheBuster;
+  }
+
   function isStored (name) {
-    var item = localStorage.getItem(defaults.storagePrefix + name);
     try {
-        item = JSON.parse(item || 'false');
-        if (item.data && item.expire - +new Date() > 0 && item.buster === defaults.cacheBuster) {
+        var item = JSON.parse(localStorage.getItem(defaults.storagePrefix + name));
+        if (isValid(item)) {
           return item;
         }
-        else {
-          localStorage.removeItem(defaults.storagePrefix + name);
-        }
+        localStorage.removeItem(defaults.storagePrefix + name);
         return false;
     } catch(e) {
       return false;

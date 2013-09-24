@@ -1,10 +1,14 @@
-# BundleLoader
+# Bundle Loader
 
 Loads js bundles on demand.
 
 ## What is a bundle
 
 Multiple js files packaged into one single js file.
+
+## Dependencies
+
+jQuery is required
 
 ## Options
 
@@ -36,7 +40,7 @@ var loader = Loader({
   path: '/javascript/build/'
 })
 .progress(function (type, bundle, error, errorObj) {
-  // type is loaded or error
+  // type is 'loaded' or 'error'
   // one bundle loaded or error
 })
 .done(function (loaded, failed) {
