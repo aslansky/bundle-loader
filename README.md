@@ -1,14 +1,7 @@
 # Bundle Loader
 
-Loads js bundles on demand.
-
-## What is a bundle
-
-Multiple js files packaged into one single js file.
-
-## Dependencies
-
-jQuery is required
+Loads javascript bundles on demand or on click.
+Bundles are combined files of javascript code you would generate with grunt, gulp or other build tools.
 
 ## Options
 
@@ -20,8 +13,6 @@ jQuery is required
   attr: 'data-require',
   // load automatically on Loader()
   autoload: true,
-  // if false a timestamp will be added to the script url to prevent browser caching
-  cache: true,
   // store scripts in localStorage
   store: true,
   // prefix for localStorage objects
@@ -39,9 +30,9 @@ jQuery is required
 var loader = Loader({
   path: '/javascript/build/'
 })
-.progress(function (type, bundle, error, errorObj) {
+.bundle(function (type, bundle, error, errorObj) {
   // type is 'loaded' or 'error'
-  // one bundle loaded or error
+  // bundle loaded or error
 })
 .done(function (loaded, failed) {
   // all bundles loaded
@@ -59,12 +50,5 @@ var loader = Loader({
   path: '/javascript/build/'
 });
 
-$('a').click(loader.callback('bundle-name', loadEnd, loadStart));
-```
-
-## Tests ##
-
-```
-$ npm install
-$ npm test
+loader.click('selector', 'bundle-name', loadEnd, loadStart);
 ```

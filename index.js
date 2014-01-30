@@ -108,7 +108,7 @@
     return Loader;
   };
 
-  Loader.file = function (fn) {
+  Loader.bundle = function (fn) {
     defaults.onload = fn;
     return Loader;
   };
