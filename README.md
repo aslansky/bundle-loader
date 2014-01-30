@@ -50,5 +50,5 @@ var loader = Loader({
   path: '/javascript/build/'
 });
 
-loader.click('selector', 'bundle-name', loadEnd, loadStart);
+loader.onclick('selector', 'bundle-name', loadEnd, loadStart);
 ```
