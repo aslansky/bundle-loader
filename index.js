@@ -1,10 +1,3 @@
-/**
- * BundleLoader.js
- *
- * Copyright 2013, Alexander Slansky
- * Licensed under MIT
- *
-*/
 (function (factory, root, win, doc) {
     if (typeof exports === 'object') {
       module.exports = factory(root, win, doc);
