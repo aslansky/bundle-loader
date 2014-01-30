@@ -5,24 +5,25 @@
  * Licensed under MIT
  *
 */
-(function (root, factory, doc) {
+(function (factory, root, win, doc) {
     if (typeof exports === 'object') {
-      module.exports = factory(root, doc);
+      module.exports = factory(root, win, doc);
     } else if (typeof define === 'function' && define.amd) {
       define(function () {
-        root.Loader = factory(root, doc);
+        root.Loader = factory(root, win, doc);
         return root.Loader;
       });
     } else {
-      root.Loader = factory(root, doc);
+      root.Loader = factory(root, win, doc);
     }
-}(this, function (root, doc) {
+}(function (root, win, doc) {
   'use strict';
 
   var errors = 0,
       required = [],
       failed = [],
       loaded = [],
+      conf = {},
       // check if localStorage is available
       hasStore = hasLocalStorage(),
       toLoad = 0,
@@ -51,8 +52,8 @@
   var Loader = function (options) {
     errors = 0, required = [], failed = [], loaded = [];
     // merge default options with options
-    extend(defaults, options);
-    hasStore = hasStore && defaults.store;
+    conf = extend({}, defaults, options);
+    hasStore = hasStore && conf.store;
     // init loader
     init();
     // return jquery deferred
@@ -104,17 +105,17 @@
   };
 
   Loader.done = function (fn) {
-    defaults.ondone = fn;
+    conf.ondone = fn;
     return Loader;
   };
 
   Loader.bundle = function (fn) {
-    defaults.onload = fn;
+    conf.onload = fn;
     return Loader;
   };
 
   Loader.error = function (fn) {
-    defaults.onerror = fn;
+    conf.onerror = fn;
     return Loader;
   };
 
@@ -123,15 +124,15 @@
 
   function init () {
     getRequired();
-    if (defaults.autoload) {
+    if (conf.autoload) {
       Loader.load();
     }
   }
 
   function getRequired() {
-    var eles = doc.querySelectorAll('[' + defaults.attr + ']');
+    var eles = doc.querySelectorAll('[' + conf.attr + ']');
     for (var i = 0, len = eles.length; i < len; i++) {
-      var req = eles[i].getAttribute(defaults.attr);
+      var req = eles[i].getAttribute(conf.attr);
       req = req.split(',');
       for (var j = 0, l = req.length; j < l; j++) {
         if (!inArray(required, req[j] + '')) {
@@ -157,7 +158,7 @@
       failBundle(bundle);
       if (toLoad <= 0) doneAll();
     };
-    req.open('get', defaults.path + bundle + '.js', true);
+    req.open('get', conf.path + bundle + '.js', true);
     req.send();
   }
 
@@ -194,8 +195,8 @@
       storeScript(bundle, script);
     }
     loaded.push(bundle.toString());
-    if (defaults.onload && typeof defaults.onload === 'function') {
-      defaults.onload.call(root, bundle, !script);
+    if (conf.onload && typeof conf.onload === 'function') {
+      conf.onload.call(root, bundle, !script);
     }
   }
 
@@ -203,20 +204,21 @@
     toLoad--;
     failed.push(bundle.toString());
 
-    if (defaults.onerror && typeof defaults.onerror === 'function') {
-      defaults.onerror.call(root, bundle);
+    if (conf.onerror && typeof conf.onerror === 'function') {
+      conf.onerror.call(root, bundle);
     }
   }
 
   function doneAll () {
-    if (failed.length > 0 && defaults.onerror && typeof defaults.onerror === 'function') {
-      defaults.onerror.call(root, loaded, failed);
+    if (failed.length > 0 && conf.onerror && typeof conf.onerror === 'function') {
+      conf.onerror.call(root, loaded, failed);
     }
-    else if (defaults.ondone && typeof defaults.ondone === 'function') {
-      defaults.ondone.call(root, loaded, failed);
+    else if (conf.ondone && typeof conf.ondone === 'function') {
+      conf.ondone.call(root, loaded, failed);
     }
     if (cb && typeof cb === 'function') {
       cb.call(root);
+      cb = null;
     }
   }
 
@@ -226,22 +228,22 @@
 
     obj.data = data;
     obj.time = now;
-    obj.buster = defaults.cacheBuster;
-    obj.expire = now + (defaults.expiration * 60 * 60 * 1000);
-    localStorage.setItem(defaults.storagePrefix + name, JSON.stringify(obj));
+    obj.buster = conf.cacheBuster;
+    obj.expire = now + (conf.expiration * 60 * 60 * 1000);
+    localStorage.setItem(conf.storagePrefix + name, JSON.stringify(obj));
   }
 
   function isValid (item) {
-    return item.data && item.expire - +new Date() > 0 && item.buster === defaults.cacheBuster;
+    return item.data && item.expire - +new Date() > 0 && item.buster === conf.cacheBuster;
   }
 
   function isStored (name) {
     try {
-        var item = JSON.parse(localStorage.getItem(defaults.storagePrefix + name));
+        var item = JSON.parse(localStorage.getItem(conf.storagePrefix + name));
         if (isValid(item)) {
           return item;
         }
-        localStorage.removeItem(defaults.storagePrefix + name);
+        localStorage.removeItem(conf.storagePrefix + name);
         return false;
     } catch(e) {
       return false;
@@ -250,7 +252,7 @@
 
   function hasLocalStorage () {
     try {
-      return 'localStorage' in root && root.localStorage !== null;
+      return 'localStorage' in win && win.localStorage !== null;
     } catch (e) {
       return false;
     }
@@ -312,5 +314,42 @@
     return value.replace(/^\s+|\s+$/g,'');
   }
 
+  /*global document */
+  /**
+   * define document.querySelector & document.querySelectorAll for IE7
+   *
+   * A not very fast but small hack. The approach is taken from
+   * http://weblogs.asp.net/bleroy/archive/2009/08/31/queryselectorall-on-old-ie-versions-something-that-doesn-t-work.aspx
+   *
+   */
+  if (!document.querySelectorAll && !document.querySelector) {
+    var style = document.createStyleSheet();
+    var select = function (selector, maxCount) {
+      var all = document.all,
+          l = all.length,
+          i,
+          resultSet = [];
+
+      style.addRule(selector, "foo:bar");
+      for (i = 0; i < l; i += 1) {
+        if (all[i].currentStyle.foo === "bar") {
+          resultSet.push(all[i]);
+          if (resultSet.length > maxCount) {
+            break;
+          }
+        }
+      }
+      style.removeRule(0);
+      return resultSet;
+    };
+    //  be rly sure not to destroy a thing!
+    document.querySelectorAll = function (selector) {
+      return select(selector, Infinity);
+    };
+    document.querySelector = function (selector) {
+      return select(selector, 1)[0] || null;
+    };
+  }
+
   return Loader;
-}, document));
+}, this, window, document));

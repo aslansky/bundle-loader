@@ -4,121 +4,104 @@ var Loader = require('../');
 describe('Bundle-Loader', function() {
 
   var path = 'test/fixtures/';
-  var fireEvent = function (element, event) {
-    var evt;
-    if (document.createEvent) {
-        evt = document.createEvent("MouseEvents");
-        evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, 0, null);
-        element.dispatchEvent(evt);
-      } else {
-        evt = document.createEventObject();
-        element.fireEvent('on' + event);
-      }
-  };
 
   describe('bundle loading', function () {
+    var loader;
     beforeEach(function () {
+      loader = null;
       var div = document.createElement('div');
       div.setAttribute('data-require', 'load');
-      document.body.appendChild(div);
+      document.getElementsByTagName('body')[0].appendChild(div);
     });
+
     afterEach(function () {
-      Loader.clearStorage();
+      loader.clearStorage();
       document.LOADED = null;
-      document.body.removeChild(document.querySelector('[data-require]'));
-      document.head.removeChild(document.querySelector('script'));
+      if (document.querySelector('[data-require]')) {
+        document.getElementsByTagName('body')[0].removeChild(document.querySelector('[data-require]'));
+      }
+      document.getElementsByTagName('head')[0].removeChild(document.querySelector('script'));
     });
-    it('should load one js bundle after load() is called', function (done) {
-      var loader = Loader({path: path, autoload: false}).done(function () {
+
+    it('should load one js bundle after load() is called', function (cb) {
+      loader = Loader({path: path, autoload: false}).done(function () {
         assert.equal(document.LOADED, 'DONE');
-        done();
+        cb();
       }).load();
     });
-    it('should load one js bundle instantly', function (done) {
-      var loader = Loader({ path: path, autoload: true}).done(function () {
+
+    it('should load one js bundle instantly', function (cb) {
+      loader = Loader({ path: path, autoload: true, test: 'instant'}).done(function () {
         assert.equal(document.LOADED, 'DONE');
-        done();
+        cb();
       });
     });
-    it('should save loaded source in localstorage and then get bundle from localstorage', function (done) {
+
+    it('should save loaded source in localstorage and then get bundle from localstorage', function (cb) {
       var data = null;
-      var loader = new Loader({ path: path, autoload: true}).done(function () {
-        data = JSON.parse(localStorage.getItem('loader-load'));
+      loader = new Loader({ path: path, autoload: true}).done(function () {
+        data = JSON.parse(window.localStorage.getItem('loader-load'));
         assert.equal(document.LOADED, 'DONE');
         assert(data.data);
         assert(data.time);
         assert.equal(data.buster, '');
         assert(data.expire);
-        Loader.clearStorage();
+        loader.clearStorage();
         assert.deepEqual(localStorage, {});
-        done();
+        cb();
       });
     });
-  });
 
-  describe('on click loading', function () {
-    before(function () {
+    it('should load one js bundle on click event', function (cb) {
+      after(function () {
+        document.getElementsByTagName('body')[0].removeChild(document.getElementById('load-test'));
+      });
+      document.getElementsByTagName('body')[0].removeChild(document.querySelector('[data-require]'));
       var a = document.createElement('a');
       a.setAttribute('id', 'load-test');
-      document.body.appendChild(a);
-    });
-    after(function () {
-      document.body.removeChild(document.getElementById('load-test'));
-      document.head.removeChild(document.querySelector('script'));
-    });
-    it('should load one js bundle on click event', function (done) {
-      var loader = new Loader({ path: path, autoload: false });
+      document.getElementsByTagName('body')[0].appendChild(a);
+      loader = new Loader({ path: path, autoload: false });
       var startCount = 0;
-
       loader.onclick('#load-test', 'load', function () {
         assert.equal(document.LOADED, 'DONE');
         assert.equal(startCount, 1);
-        done();
+        cb();
       }, function () {
         startCount++;
       });
       document.getElementById('load-test').click();
     });
-  });
 
-  describe('load error', function () {
-    before(function () {
+    it('should fail', function (cb) {
+      after(function () {
+        document.getElementsByTagName('body')[0].removeChild(document.querySelector('[data-require]'));
+      });
       var div = document.createElement('div');
       div.setAttribute('data-require', 'foo');
-      document.body.appendChild(div);
-    });
-    after(function () {
-      document.body.removeChild(document.querySelector('[data-require]'));
-    });
-    it('should fail', function (done) {
+      document.getElementsByTagName('body')[0].appendChild(div);
       var errorCount = 0;
-      var loader = new Loader({path: path, autoload: false});
+      loader = new Loader({path: path, autoload: false});
       loader.done(function (d, f) {
         assert.equal(f.length, 1);
-        done();
+        cb();
       });
       loader.load();
     });
-  });
 
-  describe('custom data attribute', function () {
-    before(function () {
+    it('should load one js bundle instantly', function (cb) {
+      after(function () {
+        document.getElementsByTagName('body')[0].removeChild(document.querySelector('[data-load]'));
+      });
       var div = document.createElement('div');
       div.setAttribute('data-load', 'load');
-      document.body.appendChild(div);
-    });
-    after(function () {
-      document.head.removeChild(document.querySelector('script'));
-      document.body.removeChild(document.querySelector('[data-load]'));
-    });
-    it('should load one js bundle instantly', function (done) {
-      var loader = new Loader({attr: 'data-load', path: path, autoload: true});
+      document.getElementsByTagName('body')[0].appendChild(div);
+      loader = new Loader({attr: 'data-load', path: path, autoload: true});
       loader.done(function (d) {
         assert.equal(d.length, 1);
         assert.equal(document.LOADED, 'DONE');
-        done();
+        cb();
       });
     });
-  });
 
+  });
 });
