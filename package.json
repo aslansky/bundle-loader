@@ -30,7 +30,6 @@
   },
   "testling": {
     "browsers": {
-      "ie": [8, 9, 10],
       "ff": [25, 24],
       "chrome": [31, 30],
       "safari": [5.1],
