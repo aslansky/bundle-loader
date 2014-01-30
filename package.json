@@ -26,16 +26,35 @@
     "gulp-concat": "~2.1.7",
     "gulp-rename": "~0.2.2",
     "gulp-header": "~1.0.2",
-    "mocha": "~1.17.1"
+    "mocha": "~1.17.1",
+    "bonzo": "~1.3.7",
+    "qwery": "~3.4.1",
+    "bean": "~1.0.6"
   },
   "testling": {
     "browsers": {
-      "ff": [25, 24],
-      "chrome": [31, 30],
-      "safari": [5.1],
-      "opera": [17, 16]
+      "ie": [
+        8,
+        9,
+        10
+      ],
+      "ff": [
+        25,
+        24
+      ],
+      "chrome": [
+        31,
+        30
+      ],
+      "safari": [
+        5.1
+      ],
+      "opera": [
+        17,
+        16
+      ]
     },
-    "harness" : "mocha",
+    "harness": "mocha",
     "files": "test/main.js"
   }
 }

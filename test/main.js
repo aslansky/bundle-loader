@@ -1,5 +1,14 @@
 var assert = require('assert');
+var bonzo = require('bonzo');
+var qwery = require('qwery');
+var bean = require('bean');
 var Loader = require('../');
+
+bonzo.setQueryEngine(qwery);
+bean.setSelectorEngine(qwery);
+function s(selector) {
+  return bonzo(qwery(selector));
+}
 
 describe('Bundle-Loader', function() {
 
@@ -9,18 +18,14 @@ describe('Bundle-Loader', function() {
     var loader;
     beforeEach(function () {
       loader = null;
-      var div = document.createElement('div');
-      div.setAttribute('data-require', 'load');
-      document.getElementsByTagName('body')[0].appendChild(div);
+      bonzo(bonzo.create('<div>')).attr('data-require', 'load').appendTo(s('body'));
     });
 
     afterEach(function () {
       loader.clearStorage();
       document.LOADED = null;
-      if (document.querySelector('[data-require]')) {
-        document.getElementsByTagName('body')[0].removeChild(document.querySelector('[data-require]'));
-      }
-      document.getElementsByTagName('head')[0].removeChild(document.querySelector('script'));
+      s('[data-require]').remove();
+      s('script', 'head').remove();
     });
 
     it('should load one js bundle after load() is called', function (cb) {
@@ -54,12 +59,10 @@ describe('Bundle-Loader', function() {
 
     it('should load one js bundle on click event', function (cb) {
       after(function () {
-        document.getElementsByTagName('body')[0].removeChild(document.getElementById('load-test'));
+        s('#load-test').remove();
       });
-      document.getElementsByTagName('body')[0].removeChild(document.querySelector('[data-require]'));
-      var a = document.createElement('a');
-      a.setAttribute('id', 'load-test');
-      document.getElementsByTagName('body')[0].appendChild(a);
+      s('[data-require]').remove();
+      bonzo(bonzo.create('<a>')).attr('id', 'load-test').appendTo(qwery('body'));
       loader = new Loader({ path: path, autoload: false });
       var startCount = 0;
       loader.onclick('#load-test', 'load', function () {
@@ -69,16 +72,14 @@ describe('Bundle-Loader', function() {
       }, function () {
         startCount++;
       });
-      document.getElementById('load-test').click();
+      bean.fire(s('#load-test')[0], 'click');
     });
 
     it('should fail', function (cb) {
       after(function () {
-        document.getElementsByTagName('body')[0].removeChild(document.querySelector('[data-require]'));
+        s('[data-require]').remove();
       });
-      var div = document.createElement('div');
-      div.setAttribute('data-require', 'foo');
-      document.getElementsByTagName('body')[0].appendChild(div);
+      bonzo(bonzo.create('<div>')).attr('data-require', 'foo').appendTo(qwery('body'));
       var errorCount = 0;
       loader = new Loader({path: path, autoload: false});
       loader.done(function (d, f) {
@@ -90,11 +91,9 @@ describe('Bundle-Loader', function() {
 
     it('should load one js bundle instantly', function (cb) {
       after(function () {
-        document.getElementsByTagName('body')[0].removeChild(document.querySelector('[data-load]'));
+        s('[data-load]').remove();
       });
-      var div = document.createElement('div');
-      div.setAttribute('data-load', 'load');
-      document.getElementsByTagName('body')[0].appendChild(div);
+      bonzo(bonzo.create('<div>')).attr('data-load', 'load').appendTo(qwery('body'));
       loader = new Loader({attr: 'data-load', path: path, autoload: true});
       loader.done(function (d) {
         assert.equal(d.length, 1);
