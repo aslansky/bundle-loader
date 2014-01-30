@@ -3,30 +3,40 @@
   "version": "0.2.0",
   "description": "A loader for loading js bundles with data attributes",
   "author": "Alexander Slansky <alexander@slansky.net> (http://slansky.net)",
+  "license": "MIT",
   "keywords": [
     "file",
     "bundle",
     "loader",
+    "module",
     "data-attribute"
   ],
   "directories": {
     "lib": "./lib",
     "test": "./test"
   },
-  "main": "./lib/bundle-loader",
+  "main": "./index",
   "homepage": "http://github.com/aslansky/bundle-loader",
   "repository": "git://github.com/aslansky/bundle-loader.git",
-  "scripts": {
-    "test": "./node_modules/grunt-karma/node_modules/.bin/karma start --single-run --browsers PhantomJS ./test/karma.config.js"
-  },
   "devDependencies": {
     "grunt": "~0.4",
     "grunt-contrib-uglify": "~0.1.1",
     "grunt-contrib-jshint": "~0.3.0",
-    "grunt-karma": "~0.4.0",
     "grunt-contrib-clean": "~0.4.0",
     "grunt-contrib-watch": "~0.3.1",
     "grunt-contrib-concat": "~0.2.0",
-    "grunt-complexity": "~0.1.2"
+    "grunt-complexity": "~0.1.2",
+    "mocha": "~1.17.1"
+  },
+  "testling": {
+    "browsers": {
+      "ie": [7, 8, 9, 10],
+      "ff": [25, 24],
+      "chrome": [31, 30],
+      "safari": [5.1],
+      "opera": [17, 16]
+    },
+    "harness" : "mocha",
+    "files": "test/main.js"
   }
 }

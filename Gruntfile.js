@@ -27,34 +27,9 @@ module.exports = function(grunt) {
         }
       }
     },
-    karma: {
-      options: {
-        configFile: 'test/karma.config.js'
-      },
-      watch: {
-        browsers: ['Chrome', 'Firefox'],
-        background: true
-      },
-      test: {
-        browsers: ['Chrome', 'Firefox'],
-        singleRun: true
-      },
-      report: {
-        reporters: 'coverage',
-        coverageReporter: {
-          type : 'html',
-          dir : 'report/coverage/'
-        },
-        preprocessors: {
-          'lib/*.js': 'coverage'
-        },
-        browsers: ['Chrome'],
-        singleRun: true
-      }
-    },
     complexity: {
       generic: {
-        src: ['lib/*.js'],
+        src: ['index.js'],
         options: {
           errorsOnly: false,
           cyclomatic: 4,
@@ -71,25 +46,32 @@ module.exports = function(grunt) {
     },
     watch: {
       scripts: {
-        files: ['lib/*.js', 'test/spec/*.js'],
-        tasks: ['jshint:test', 'karma:watch:run', 'complexity'],
+        files: ['*.js', 'test/*.js'],
+        tasks: ['jshint:test', 'complexity'],
         options: {
           nospawn: true
+        }
+      }
+    },
+    connect: {
+      server: {
+        options: {
+          port: 9001,
+          keepalive: true,
+          base: '.'
         }
       }
     }
   });
 
-  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-complexity');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-complexity');
+  grunt.loadNpmTasks('grunt-contrib-connect');
 
-  grunt.registerTask('default', ['karma:watch', 'watch']);
-  grunt.registerTask('test', ['jshint:test', 'karma:test']);
-  grunt.registerTask('report', ['karma:report']);
+  grunt.registerTask('default', ['watch']);
   grunt.registerTask('build', ['concat:build','uglify:build']);
 };

@@ -1,3 +1,3 @@
-(function () {
-  // do nothing
-})();
+(function (doc) {
+  doc.LOADED = 'DONE';
+})(document);
