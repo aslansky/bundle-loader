@@ -75,20 +75,6 @@ describe('Bundle-Loader', function() {
       bean.fire(s('#load-test')[0], 'click');
     });
 
-    it('should fail', function (cb) {
-      after(function () {
-        s('[data-require]').remove();
-      });
-      bonzo(bonzo.create('<div>')).attr('data-require', 'foo').appendTo(qwery('body'));
-      var errorCount = 0;
-      loader = new Loader({path: path, autoload: false});
-      loader.done(function (d, f) {
-        assert.equal(f.length, 1);
-        cb();
-      });
-      loader.load();
-    });
-
     it('should load one js bundle instantly', function (cb) {
       after(function () {
         s('[data-load]').remove();
