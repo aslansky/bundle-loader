@@ -43,12 +43,12 @@ var loader = Loader({
 <div data-require="bundle-name"></div>
 ```
 
-### On event loading ###
+### On click loading ###
 
 ```
 var loader = Loader({
   path: '/javascript/build/'
 });
 
-loader.onclick('selector', 'bundle-name', loadEnd, loadStart);
+loader.onclick(selector, 'bundle-name', loadEnd, loadStart);
 ```

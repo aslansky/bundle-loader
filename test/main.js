@@ -3,7 +3,7 @@ var Loader = require('../');
 
 describe('Bundle-Loader', function() {
 
-  var path = 'fixtures/';
+  var path = 'test/fixtures/';
   var fireEvent = function (element, event) {
     var evt;
     if (document.createEvent) {
