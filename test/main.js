@@ -3,6 +3,8 @@ var bonzo = require('bonzo');
 var qwery = require('qwery');
 var bean = require('bean');
 var Loader = require('../');
+var path = 'test/fixtures/';
+var loader;
 
 bonzo.setQueryEngine(qwery);
 bean.setSelectorEngine(qwery);
@@ -11,11 +13,7 @@ function s(selector) {
 }
 
 describe('Bundle-Loader', function() {
-
-  var path = 'test/fixtures/';
-
   describe('bundle loading', function () {
-    var loader;
     beforeEach(function () {
       loader = null;
       bonzo(bonzo.create('<div>')).attr('data-require', 'load').appendTo(s('body'));
@@ -29,14 +27,14 @@ describe('Bundle-Loader', function() {
     });
 
     it('should load one js bundle after load() is called', function (cb) {
-      loader = Loader({path: path, autoload: false}).done(function () {
+      loader = new Loader({path: path, autoload: false}).done(function () {
         assert.equal(document.LOADED, 'DONE');
         cb();
       }).load();
     });
 
     it('should load one js bundle instantly', function (cb) {
-      loader = Loader({ path: path, autoload: true, test: 'instant'}).done(function () {
+      loader = new Loader({ path: path, autoload: true, test: 'instant'}).done(function () {
         assert.equal(document.LOADED, 'DONE');
         cb();
       });
@@ -72,7 +70,13 @@ describe('Bundle-Loader', function() {
       }, function () {
         startCount++;
       });
-      bean.fire(s('#load-test')[0], 'click');
+      if (s('#load-test').get(0).fireEvent) {
+        var evObj = document.createEventObject();
+        var res = s('#load-test').get(0).fireEvent('onclick', evObj);
+      }
+      else {
+        bean.fire(s('#load-test')[0], 'click');
+      }
     });
 
     it('should load one js bundle instantly', function (cb) {

@@ -20,7 +20,7 @@
   "repository": "git://github.com/aslansky/bundle-loader.git",
   "devDependencies": {
     "gulp-util": "~2.2.12",
-    "gulp": "~3.4.0",
+    "gulp": "~3.5.1",
     "gulp-browserify": "0.3.4",
     "gulp-uglify": "~0.1.0",
     "gulp-concat": "~2.1.7",
@@ -36,7 +36,8 @@
       "ie": [
         8,
         9,
-        10
+        10,
+        11
       ],
       "ff": [
         25,

@@ -93,8 +93,10 @@
   };
 
   Loader.clearStorage = function () {
+    if (hasStore) {
       localStorage.clear();
-      return Loader;
+    }
+    return Loader;
   };
 
   Loader.done = function (fn) {
@@ -137,16 +139,25 @@
 
   function getFromServer (bundle) {
     var req = new XMLHttpRequest();
-    req.onload = function () {
-      if (this.status > 400) {
-        failBundle(bundle);
+    var cb = function () {
+      if (req.readyState === 4) {
+        if (this.status > 400) {
+          failBundle(bundle);
+          if (toLoad <= 0) doneAll();
+        }
+        else if (this.response || this.responseText) {
+          createScript(this.response || this.responseText);
+          doneBundle(bundle, this.response || this.responseText);
+          if (toLoad <= 0) doneAll();
+        }
       }
-      else {
-        createScript(this.response);
-        doneBundle(bundle, this.response);
-      }
-      if (toLoad <= 0) doneAll();
     };
+    if (req.onload === undefined) {
+      req.onreadystatechange = cb;
+    }
+    else {
+      req.onload = cb;
+    }
     req.onerror = function () {
       failBundle(bundle);
       if (toLoad <= 0) doneAll();
@@ -157,11 +168,10 @@
 
   function createScript (code, src, cb) {
     var script = document.createElement('script');
-    var content = document.createTextNode(code);
     script.setAttribute('defer', 'defer');
     script.setAttribute('async', 'async');
     if (code) {
-      script.appendChild(content);
+      script.text = code;
     }
     else {
       script.setAttribute('src', src);
@@ -261,7 +271,12 @@
       if (onstart && typeof onstart === 'function') {
         onstart.call(ele);
       }
-      evt.preventDefault();
+      if (evt.preventDefault) {
+        evt.preventDefault();
+      }
+      else {
+        evt.returnValue = false;
+      }
       // push bundle to required array
       required.push(bundle);
       cb = function () {
@@ -270,15 +285,6 @@
         }
       };
       l.load();
-    }
-  }
-
-  function addEvent (elem, eventType, handler) {
-    if (elem.addEventListener) {
-      elem.addEventListener(eventType, handler, false);
-    }
-    else if (elem.attachEvent) {
-     elem.attachEvent('on' + eventType, handler);
     }
   }
 
@@ -305,6 +311,18 @@
       return value.trim();
     }
     return value.replace(/^\s+|\s+$/g,'');
+  }
+
+  function addEvent(obj, type, fn) {
+    if (obj.attachEvent) {
+      obj['e'+type+fn] = fn;
+      obj[type+fn] = function() {
+        obj['e'+type+fn](window.event);
+      };
+      obj.attachEvent('on'+type, obj[type+fn]);
+    } else {
+      obj.addEventListener(type, fn, false);
+    }
   }
 
   return Loader;

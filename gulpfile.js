@@ -7,7 +7,6 @@ var uglify = require('gulp-uglify');
 var header = require('gulp-header');
 var rename = require('gulp-rename');
 
-
 var pkg = require('./package.json');
 var banner = ['/**',
   ' * <%= pkg.name %> - <%= pkg.description %>',

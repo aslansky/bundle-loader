@@ -1,5 +1,7 @@
 # Bundle Loader
 
+[![browser support](https://ci.testling.com/aslansky/bundle-loader.png)](https://ci.testling.com/aslansky/bundle-loader)
+
 Loads javascript bundles on demand or on click.
 Bundles are combined files of javascript code you would generate with grunt, gulp or other build tools.
 
