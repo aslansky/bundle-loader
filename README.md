@@ -1,4 +1,4 @@
-# Bundle Loader
+# Bundle Loader [![devDependency Status](https://david-dm.org/aslansky/bundle-loader/dev-status.png)](https://david-dm.org/aslansky/bundle-loader#info=devDependencies)
 
 [![browser support](https://ci.testling.com/aslansky/bundle-loader.png)](https://ci.testling.com/aslansky/bundle-loader)
 

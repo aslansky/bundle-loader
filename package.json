@@ -21,8 +21,8 @@
   "devDependencies": {
     "gulp-util": "~2.2.12",
     "gulp": "~3.5.1",
-    "gulp-browserify": "0.3.4",
-    "gulp-uglify": "~0.1.0",
+    "gulp-browserify": "0.4.2",
+    "gulp-uglify": "~0.2.0",
     "gulp-concat": "~2.1.7",
     "gulp-rename": "~0.2.2",
     "gulp-header": "~1.0.2",
