@@ -19,6 +19,7 @@ var banner = ['/**',
 gulp.task('concat', function() {
   gulp.src('./index.js')
   .pipe(header(banner, {pkg: pkg}))
+  .pipe(rename('taxi.js'))
   .pipe(gulp.dest('./dist'));
 });
 
@@ -29,7 +30,7 @@ gulp.task('uglify', function() {
         except: ['require', 'export']
       }
     }))
-    .pipe(rename('bundle-loader.min.js'))
+    .pipe(rename('taxi.min.js'))
     .pipe(header(banner, {pkg: pkg}))
     .pipe(gulp.dest('./dist'));
 });

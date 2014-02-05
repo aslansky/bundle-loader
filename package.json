@@ -1,7 +1,7 @@
 {
-  "name": "bundle-loader",
+  "name": "taxi.js",
   "version": "0.3.0",
-  "description": "A loader for loading client side javascript bundles with data attributes",
+  "description": "A javascript loader for loading client side bundles on demand.",
   "author": "Alexander Slansky <alexander@slansky.net> (http://slansky.net)",
   "license": "MIT",
   "keywords": [
@@ -17,8 +17,8 @@
     "test": "./test"
   },
   "main": "./index",
-  "homepage": "http://github.com/aslansky/bundle-loader",
-  "repository": "git://github.com/aslansky/bundle-loader.git",
+  "homepage": "http://github.com/aslansky/taxi.js",
+  "repository": "git://github.com/aslansky/taxi.js.git",
   "devDependencies": {
     "gulp-util": "~2.2.12",
     "gulp": "~3.5.1",

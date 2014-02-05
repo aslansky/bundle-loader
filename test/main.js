@@ -2,7 +2,7 @@ var assert = require('assert');
 var bonzo = require('bonzo');
 var qwery = require('qwery');
 var bean = require('bean');
-var Loader = require('../');
+var Taxi = require('../');
 var path = 'test/fixtures/';
 var loader;
 
@@ -12,7 +12,7 @@ function s(selector) {
   return bonzo(qwery(selector));
 }
 
-describe('Bundle-Loader', function() {
+describe('taxi.js', function() {
   describe('bundle loading', function () {
     beforeEach(function () {
       loader = null;
@@ -27,14 +27,14 @@ describe('Bundle-Loader', function() {
     });
 
     it('should load one js bundle after load() is called', function (cb) {
-      loader = new Loader({path: path, autoload: false}).done(function () {
+      loader = new Taxi({path: path, autoload: false}).done(function () {
         assert.equal(document.LOADED, 'DONE');
         cb();
       }).load();
     });
 
     it('should load one js bundle instantly', function (cb) {
-      loader = new Loader({ path: path, autoload: true, test: 'instant'}).done(function () {
+      loader = new Taxi({ path: path, autoload: true, test: 'instant'}).done(function () {
         assert.equal(document.LOADED, 'DONE');
         cb();
       });
@@ -42,7 +42,7 @@ describe('Bundle-Loader', function() {
 
     it('should save loaded source in localstorage and then get bundle from localstorage', function (cb) {
       var data = null;
-      loader = new Loader({ path: path, autoload: true}).done(function () {
+      loader = new Taxi({ path: path, autoload: true}).done(function () {
         data = JSON.parse(window.localStorage.getItem('loader-load'));
         assert.equal(document.LOADED, 'DONE');
         assert(data.data);
@@ -61,7 +61,7 @@ describe('Bundle-Loader', function() {
       });
       s('[data-require]').remove();
       bonzo(bonzo.create('<a>')).attr('id', 'load-test').appendTo(qwery('body'));
-      loader = new Loader({ path: path, autoload: false });
+      loader = new Taxi({ path: path, autoload: false });
       var startCount = 0;
       loader.onclick('#load-test', 'load', function () {
         assert.equal(document.LOADED, 'DONE');
@@ -84,7 +84,7 @@ describe('Bundle-Loader', function() {
         s('[data-load]').remove();
       });
       bonzo(bonzo.create('<div>')).attr('data-load', 'load').appendTo(qwery('body'));
-      loader = new Loader({attr: 'data-load', path: path, autoload: true});
+      loader = new Taxi({attr: 'data-load', path: path, autoload: true});
       loader.done(function (d) {
         assert.equal(d.length, 1);
         assert.equal(document.LOADED, 'DONE');

@@ -1,7 +1,7 @@
 /**
- * bundle-loader - A loader for loading client side javascript bundles with data attributes
+ * taxi.js - A javascript loader for loading client side bundles on demand.
  * @version v0.3.0
- * @link http://github.com/aslansky/bundle-loader
+ * @link http://github.com/aslansky/taxi.js
  * @license MIT
  */
 (function (factory, root, win, doc) {

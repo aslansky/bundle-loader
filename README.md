@@ -1,9 +1,9 @@
-# Bundle Loader [![NPM version](https://badge.fury.io/js/bundle-loader.png)](http://badge.fury.io/js/bundle-loader) [![devDependency Status](https://david-dm.org/aslansky/bundle-loader/dev-status.png)](https://david-dm.org/aslansky/bundle-loader#info=devDependencies)
+# taxi.js [![NPM version](https://badge.fury.io/js/taxi.js.png)](http://badge.fury.io/js/taxi.js) [![devDependency Status](https://david-dm.org/aslansky/taxi.js/dev-status.png)](https://david-dm.org/aslansky/taxi.js#info=devDependencies)
 
-[![browser support](https://ci.testling.com/aslansky/bundle-loader.png)](https://ci.testling.com/aslansky/bundle-loader)
+[![browser support](https://ci.testling.com/aslansky/taxi.js.png)](https://ci.testling.com/aslansky/taxi.js)
 
 Loads javascript bundles on demand or on click.
-Bundles are combined files of javascript code you would generate with grunt, gulp or other build tools.
+Bundles are combined files of javascript code you would generate with browserify, grunt, gulp or other build tools.
 
 ## Options
 
@@ -13,12 +13,12 @@ Bundles are combined files of javascript code you would generate with grunt, gul
   path: '/',
   // html attribute
   attr: 'data-require',
-  // load automatically on Loader()
+  // load automatically on Taxi()
   autoload: true,
   // store scripts in localStorage
   store: true,
   // prefix for localStorage objects
-  storagePrefix: 'loader-',
+  storagePrefix: 'taxi-',
   // default expire time in hours (2h)
   expiration: 2,
   // invalidation string, if changed stored object will be invalidated
@@ -29,7 +29,7 @@ Bundles are combined files of javascript code you would generate with grunt, gul
 ## Usage ##
 
 ```
-var loader = Loader({
+var taxi = Taxi({
   path: '/javascript/build/'
 })
 .bundle(function (type, bundle, error, errorObj) {
@@ -48,9 +48,9 @@ var loader = Loader({
 ### On click loading ###
 
 ```
-var loader = Loader({
+var taxi = Taxi({
   path: '/javascript/build/'
 });
 
-loader.onclick(selector, 'bundle-name', loadEnd, loadStart);
+taxi.onclick(selector, 'bundle-name', loadEnd, loadStart);
 ```
