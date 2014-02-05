@@ -18,7 +18,6 @@ var banner = ['/**',
 
 gulp.task('concat', function() {
   gulp.src('./index.js')
-  .pipe(concat('bundle-loader.js'))
   .pipe(header(banner, {pkg: pkg}))
   .pipe(gulp.dest('./dist'));
 });

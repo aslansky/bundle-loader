@@ -1,7 +1,7 @@
 {
-  "name": "BundleLoader",
+  "name": "bundle-loader",
   "version": "0.3.0",
-  "description": "A loader for loading js bundles with data attributes",
+  "description": "A loader for loading client side javascript bundles with data attributes",
   "author": "Alexander Slansky <alexander@slansky.net> (http://slansky.net)",
   "license": "MIT",
   "keywords": [
@@ -9,10 +9,11 @@
     "bundle",
     "loader",
     "module",
-    "data-attribute"
+    "data-attribute",
+    "ondemand",
+    "browserify"
   ],
   "directories": {
-    "lib": "./lib",
     "test": "./test"
   },
   "main": "./index",
