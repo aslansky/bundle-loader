@@ -3,11 +3,11 @@
       module.exports = factory(root, win, doc);
     } else if (typeof define === 'function' && define.amd) {
       define(function () {
-        root.Loader = factory(root, win, doc);
-        return root.Loader;
+        root.Taxi = factory(root, win, doc);
+        return root.Taxi;
       });
     } else {
-      root.Loader = factory(root, win, doc);
+      root.Taxi = factory(root, win, doc);
     }
 }(function (root, win, doc) {
   'use strict';
@@ -30,10 +30,12 @@
         path: '/',
         // html attribute
         attr: 'data-require',
-        // load automaticaly on Loader()
+        // load automaticaly on Taxi()
         autoload: true,
         // store scripts in localStorage
         store: true,
+        // cache scripts / if false will append timestamp as query string to script url
+        cache: true,
         // prefix for localStorage objects
         storagePrefix: 'loader-',
         // default expire time (2h)
@@ -42,7 +44,7 @@
         cacheBuster: ''
       };
 
-  var Loader = function (options) {
+  var Taxi = function (options) {
     errors = 0, required = [], failed = [], loaded = [];
     // merge default options with options
     conf = extend({}, defaults, options);
@@ -50,10 +52,10 @@
     // init loader
     init();
     // return jquery deferred
-    return Loader;
+    return Taxi;
   };
 
-  Loader.load = function (force) {
+  Taxi.load = function (force) {
     setTimeout(function () {
       var storeObj = false;
       toLoad = required.length;
@@ -77,11 +79,11 @@
         }
       }
     }, 0);
-    return Loader;
+    return Taxi;
   };
 
   // function to attach event to element and load something on click
-  Loader.onclick = function (selector, bundle, fn, onstart) {
+  Taxi.onclick = function (selector, bundle, fn, onstart) {
     // save loader scope
     var eles = doc.querySelectorAll(selector);
     var that = this;
@@ -92,35 +94,35 @@
     }
   };
 
-  Loader.clearStorage = function () {
+  Taxi.clearStorage = function () {
     if (hasStore) {
       localStorage.clear();
     }
-    return Loader;
+    return Taxi;
   };
 
-  Loader.done = function (fn) {
+  Taxi.done = function (fn) {
     conf.ondone = fn;
-    return Loader;
+    return Taxi;
   };
 
-  Loader.bundle = function (fn) {
+  Taxi.bundle = function (fn) {
     conf.onload = fn;
-    return Loader;
+    return Taxi;
   };
 
-  Loader.error = function (fn) {
+  Taxi.error = function (fn) {
     conf.onerror = fn;
-    return Loader;
+    return Taxi;
   };
 
-  Loader.loaded = loaded;
-  Loader.failed = failed;
+  Taxi.loaded = loaded;
+  Taxi.failed = failed;
 
   function init () {
     getRequired();
     if (conf.autoload) {
-      Loader.load();
+      Taxi.load();
     }
   }
 
@@ -139,6 +141,7 @@
 
   function getFromServer (bundle) {
     var req = new XMLHttpRequest();
+    var cache = (conf.cache) ? '' : '?' + +new Date;
     var cb = function () {
       if (req.readyState === 4) {
         if (this.status > 400) {
@@ -162,7 +165,7 @@
       failBundle(bundle);
       if (toLoad <= 0) doneAll();
     };
-    req.open('get', conf.path + bundle + '.js', true);
+    req.open('get', conf.path + bundle + '.js' + cache, true);
     req.send();
   }
 
@@ -325,5 +328,5 @@
     }
   }
 
-  return Loader;
+  return Taxi;
 }, this, window, document));

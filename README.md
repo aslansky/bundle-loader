@@ -17,6 +17,8 @@ Bundles are combined files of javascript code you would generate with browserify
   autoload: true,
   // store scripts in localStorage
   store: true,
+  // cache scripts / if false will append timestamp as query string to script url
+  cache: true,
   // prefix for localStorage objects
   storagePrefix: 'taxi-',
   // default expire time in hours (2h)
