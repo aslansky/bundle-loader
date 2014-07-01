@@ -65,8 +65,8 @@
         getRequired();
       }
       for (var i = 0, len = required.length; i < len; i++) {
+        var file = required[i];
         if (!inArray(loaded, file)) {
-          var file = required[i];
           if (hasStore) {
             storeObj = isStored(file);
           }

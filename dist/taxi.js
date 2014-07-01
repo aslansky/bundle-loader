@@ -1,6 +1,6 @@
 /**
  * taxi.js - A javascript loader for loading client side bundles on demand.
- * @version v0.3.1
+ * @version v0.3.2
  * @link http://github.com/aslansky/taxi.js
  * @license MIT
  */
@@ -71,8 +71,8 @@
         getRequired();
       }
       for (var i = 0, len = required.length; i < len; i++) {
+        var file = required[i];
         if (!inArray(loaded, file)) {
-          var file = required[i];
           if (hasStore) {
             storeObj = isStored(file);
           }
