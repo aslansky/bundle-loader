@@ -57,6 +57,3 @@ var taxi = Taxi({
 taxi.onclick(selector, 'bundle-name', loadEnd, loadStart);
 ```
 
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/aslansky/taxi.js/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
