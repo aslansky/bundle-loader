@@ -1,6 +1,6 @@
 {
   "name": "taxi.js",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A javascript loader for loading client side bundles on demand.",
   "author": "Alexander Slansky <alexander@slansky.net> (http://slansky.net)",
   "license": "MIT",

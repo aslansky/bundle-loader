@@ -49,7 +49,7 @@
         // invalidation string, if changed stored object will be invalidated
         cacheBuster: '',
         // either load packes with .min.js or .js
-        usMin: false
+        useMin: false
       };
 
   var Taxi = function (options) {
