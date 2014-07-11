@@ -41,7 +41,9 @@
         // default expire time (2h)
         expiration: 2,
         // invalidation string, if changed stored object will be invalidated
-        cacheBuster: ''
+        cacheBuster: '',
+        // either load packes with .min.js or .js
+        usMin: false
       };
 
   var Taxi = function (options) {
@@ -142,6 +144,7 @@
   function getFromServer (bundle) {
     var req = new XMLHttpRequest();
     var cache = (conf.cache) ? '' : '?' + +new Date;
+    var ext = conf.useMin ? '.min.js' : '.js';
     var cb = function () {
       if (req.readyState === 4) {
         if (this.status > 400) {
@@ -165,7 +168,7 @@
       failBundle(bundle);
       if (toLoad <= 0) doneAll();
     };
-    req.open('get', conf.path + bundle + '.js' + cache, true);
+    req.open('get', conf.path + bundle + ext + cache, true);
     req.send();
   }
 

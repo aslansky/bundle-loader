@@ -24,7 +24,9 @@ Bundles are combined files of javascript code you would generate with browserify
   // default expire time in hours (2h)
   expiration: 2,
   // invalidation string, if changed stored object will be invalidated
-  cacheBuster: ''
+  cacheBuster: '',
+  // either load packes with .min.js or .js
+  usMin: false
 }
 ```
 
@@ -56,4 +58,3 @@ var taxi = Taxi({
 
 taxi.onclick(selector, 'bundle-name', loadEnd, loadStart);
 ```
-
