@@ -58,3 +58,5 @@ var taxi = Taxi({
 
 taxi.onclick(selector, 'bundle-name', loadEnd, loadStart);
 ```
+
+[![Analytics](https://ga-beacon.appspot.com/UA-56885856-1/aslansky/taxi.js)](https://github.com/igrigorik/ga-beacon)
