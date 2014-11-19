@@ -1,0 +1,26 @@
+{
+  "name": "taxi.js",
+  "main": "dist/taxi.js",
+  "version": "0.3.4",
+  "homepage": "https://github.com/aslansky/taxi.js",
+  "authors": [
+    "Alexander Slansky <alexander@slansky.net>"
+  ],
+  "description": "A javascript loader for loading client side bundles on demand.",
+  "keywords": [
+    "file",
+    "bundle",
+    "loader",
+    "module",
+    "data-attribute",
+    "ondemand"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
