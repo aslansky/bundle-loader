@@ -1,6 +1,6 @@
 /**
  * taxi.js - A javascript loader for loading client side bundles on demand.
- * @version v0.3.3
+ * @version v0.3.4
  * @link http://github.com/aslansky/taxi.js
  * @license MIT
  */
@@ -99,6 +99,24 @@
       addEvent(eles[i], 'click', function (e) {
         handleClick(e, bundle, fn, onstart, that);
       });
+    }
+  };
+
+  Taxi.require = function (bundle, fn, onstart) {
+    if (inArray(loaded, bundle) && fn && typeof fn === 'function') {
+      fn.call(loaded, failed);
+    }
+    else {
+      if (onstart && typeof onstart === 'function') {
+        onstart.call(bundle);
+      }
+      required.push(bundle);
+      cb = function () {
+        if (fn && typeof fn === 'function') {
+          fn.call(loaded, failed);
+        }
+      };
+      this.load();
     }
   };
 

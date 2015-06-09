@@ -96,6 +96,24 @@
     }
   };
 
+  Taxi.require = function (bundle, fn, onstart) {
+    if (inArray(loaded, bundle) && fn && typeof fn === 'function') {
+      fn.call(loaded, failed);
+    }
+    else {
+      if (onstart && typeof onstart === 'function') {
+        onstart.call(bundle);
+      }
+      required.push(bundle);
+      cb = function () {
+        if (fn && typeof fn === 'function') {
+          fn.call(loaded, failed);
+        }
+      };
+      this.load();
+    }
+  };
+
   Taxi.clearStorage = function () {
     if (hasStore) {
       localStorage.clear();
